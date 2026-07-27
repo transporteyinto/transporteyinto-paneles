@@ -395,5 +395,26 @@
 <a href="https://site.zapia.com/vfua10lg" style="display:inline-block;background:#6a1b9a;color:white;font-weight:bold;font-size:0.95rem;padding:11px 10px;border-radius:10px;text-decoration:none;flex:1;text-align:center;" target="_blank">🚗 Panel Miguel</a>
 </div>
 <div class="footer">Actualizado por Zapia — 27/07/2026</div>
+<script>
+function toggleDia(dia) {
+  var popup = document.getElementById('popup-' + dia);
+  var btn = document.getElementById('btn-' + dia);
+  var abierto = popup.classList.contains('visible');
+  // Cerrar todos
+  document.querySelectorAll('.cal-popup-inner').forEach(function(p){ p.classList.remove('visible'); });
+  document.querySelectorAll('.cal-td-ok').forEach(function(b){ b.classList.remove('activo'); });
+  // Abrir el pulsado si estaba cerrado
+  if (!abierto) {
+    popup.classList.add('visible');
+    btn.classList.add('activo');
+  }
+}
+document.querySelectorAll('.cal-td-ok button').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var dia = this.closest('.cal-td-ok').id.replace('btn-','');
+    toggleDia(dia);
+  });
+});
+</script>
 </body>
 </html>
