@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen Semanal — Transporte Yinto</title>
+    <meta name="description" content="Resumen semanal de viajes y cobros — Transporte Yinto">
+    <meta name="theme-color" content="#1c1f26">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #eceef2;
+            padding: 14px;
+            color: #1c1f26;
+        }
+        .container { max-width: 500px; margin: auto; }
+
+        /* ── CABECERA ── */
+        .header {
+            background: #1c1f26;
+            color: white;
+            padding: 20px 20px 16px;
+            border-radius: 14px 14px 0 0;
+            text-align: center;
+        }
+        .header h1 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.3px; }
+        .header .sub { font-size: 0.8rem; color: #9aa0ad; margin-top: 4px; }
+
+        .content {
+            background: #fff;
+            border-radius: 0 0 14px 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+            padding: 16px;
+        }
+
+        /* ── ACORDEÓN DE DÍAS ── */
+        .dias-lista { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+
+        details.dia-item {
+            border-radius: 10px;
+            border: 1.5px solid #e6e8ec;
+            overflow: hidden;
+            background: #fff;
+        }
+        details.dia-item[open] {
+            border-color: #1c1f26;
+        }
+
+        details.dia-item summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 14px;
+            cursor: pointer;
+            user-select: none;
+            background: #f4f5f7;
+        }
+        details.dia-item[open] summary {
+            background: #1c1f26;
+            color: white;
+        }
+        details.dia-item summary::-webkit-details-marker { display: none; }
+
+        .sum-izq { display: flex; align-items: center; gap: 10px; }
+        .sum-fecha { font-size: 0.88rem; font-weight: 800; color: #1c1f26; }
+        details[open] .sum-fecha { color: #fff; }
+        .sum-label { font-size: 0.72rem; font-weight: 600; color: #9aa0ad; text-transform: uppercase; letter-spacing: 0.04em; }
+        details[open] .sum-label { color: #6b7280; }
+
+        .sum-der { display: flex; align-items: center; gap: 10px; }
+        .sum-total { font-size: 0.95rem; font-weight: 900; color: #f4a623; }
+        .sum-total.vacio { color: #d1d3da; font-weight: 600; font-size: 0.8rem; }
+
+        .sum-flecha { font-size: 0.75rem; color: #9aa0ad; transition: transform 0.2s; }
+        details[open] .sum-flecha { transform: rotate(180deg); color: #6b7280; }
+
+        /* ── INTERIOR DEL DÍA ── */
+        .dia-cuerpo { padding: 14px; }
+
+        /* ── BLOQUE CONDUCTOR ── */
+        .conductor-bloque { margin-bottom: 14px; }
+        .conductor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 7px;
+            margin-bottom: 5px;
+            border-left: 4px solid #ccc;
+        }
+        .conductor-nombre { font-size: 0.83rem; font-weight: 700; color: #1c1f26; }
+        .conductor-total  { font-size: 0.83rem; font-weight: 800; }
+
+        /* colores por conductor — mismos que panel general */
+        .yinto-header  { background: #e3eaf6; border-left-color: #1565c0; }
+        .yinto-header .conductor-total  { color: #1565c0; }
+        .steven-header { background: #fff8e1; border-left-color: #f9a825; }
+        .steven-header .conductor-total { color: #e65c00; }
+        .miguel-header { background: #f3e5f5; border-left-color: #6a1b9a; }
+        .miguel-header .conductor-total { color: #6a1b9a; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.79rem; }
+        thead th {
+            padding: 4px 7px;
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #9aa0ad;
+            border-bottom: 1px solid #eceef2;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+        thead th:first-child { text-align: left; }
+        tbody td {
+            padding: 6px 7px;
+            text-align: center;
+            border-bottom: 1px solid #f4f5f7;
+            color: #3d4250;
+        }
+        tbody td:first-child { text-align: left; color: #1c1f26; }
+        tbody tr:last-child td { border-bottom: none; }
+        .vacio { color: #d1d3da; }
+
+        /* ── TOTAL DEL DÍA ── */
+        .total-dia {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1c1f26;
+            color: white;
+            border-radius: 8px;
+            padding: 9px 13px;
+            margin-top: 6px;
+        }
+        .total-dia .label { font-size: 0.8rem; font-weight: 700; color: #9aa0ad; }
+        .total-dia .importe { font-size: 1rem; font-weight: 900; color: #f4a623; }
+
+        /* ── DIVISOR ── */
+        .divider { border: none; border-top: 1px solid #eceef2; margin: 18px 0; }
+
+        /* ── SECCIÓN SEMANA ── */
+        .semana-seccion { margin-top: 20px; }
+        .semana-header {
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: white;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border-radius: 7px;
+        }
+        .semana-header.yinto-bg  { background: #1565c0; }
+        .semana-header.steven-bg { background: #f9a825; color: #333; }
+        .semana-header.miguel-bg { background: #6a1b9a; }
+        .semana-tabla table { font-size: 0.78rem; }
+        .semana-tabla thead th { font-size: 0.68rem; }
+        .hoy-row td { background: #fdf6e3; font-weight: 600; }
+        .total-row td { background: #f4f5f7; font-weight: 800; color: #1c1f26; border-top: 2px solid #e0e2e8 !important; }
+
+        /* ── COMBUSTIBLE ── */
+        .diesel-header {
+            display: flex; align-items: center; gap: 7px;
+            margin-top: 20px; margin-bottom: 8px;
+        }
+        .diesel-header .label {
+            font-size: 0.78rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.06em; color: #9aa0ad;
+        }
+
+        .footer {
+            text-align: center; font-size: 0.74rem;
+            color: #9aa0ad; margin-top: 16px; padding-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>Resumen Semanal</h1>
+        <div class="sub">27 jul – 1 ago 2026 · Transporte Yinto</div>
+    </div>
+
+    <div class="content">
+
+        <!-- ═══ REGISTRO DIARIO (ACORDEÓN) ═══ -->
+        <div class="dias-lista">
+
+            <!-- LUN 27 — CON DATOS — ABIERTO -->
+            <details class="dia-item" open>
+                <summary>
+                    <div class="sum-izq">
+                        <div>
+                            <div class="sum-fecha">Lunes 27</div>
+                            <div class="sum-label">julio 2026</div>
+                        </div>
+                    </div>
+                    <div class="sum-der">
+                        <span class="sum-total">470€</span>
+                        <span class="sum-flecha">▼</span>
+                    </div>
+                </summary>
+                <div class="dia-cuerpo">
+                    <!-- Yinto -->
+                    <div class="conductor-bloque">
+                        <div class="conductor-header yinto-header">
+                            <span class="conductor-nombre">🚗 Yinto</span>
+                            <span class="conductor-total">160€</span>
+                        </div>
+                        <table>
+                            <thead><tr><th>Trabajo</th><th>Ruta</th><th>€</th><th>Cobro</th></tr></thead>
+                            <tbody>
+                                <tr><td>Traslado operarios</td><td>BCN → Gerona</td><td>160€</td><td>Transfer.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Steven -->
+                    <div class="conductor-bloque">
+                        <div class="conductor-header steven-header">
+                            <span class="conductor-nombre">🚛 Steven</span>
+                            <span class="conductor-total">100€</span>
+                        </div>
+                        <table>
+                            <thead><tr><th>Trabajo</th><th>Detalle</th><th>€</th><th>Cobro</th></tr></thead>
+                            <tbody>
+                                <tr><td>Porte impresora</td><td>Jesús Mudanzas Beal</td><td>100€</td><td>Bizum</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Miguel -->
+                    <div class="conductor-bloque">
+                        <div class="conductor-header miguel-header">
+                            <span class="conductor-nombre">🚐 Miguel</span>
+                            <span class="conductor-total">210€</span>
+                        </div>
+                        <table>
+                            <thead><tr><th>Trabajo</th><th>Ruta</th><th>€</th><th>Cobro</th></tr></thead>
+                            <tbody>
+                                <tr><td>Traslado cocina</td><td>Sta. Coloma → Sta. Coloma</td><td>35€</td><td>Efectivo</td></tr>
+                                <tr><td>Jorge Mexicano</td><td>Badalona → Tiana</td><td>60€</td><td>Bizum</td></tr>
+                                <tr><td>IKEA</td><td>IKEA → San Adrián</td><td>35€</td><td>Efectivo</td></tr>
+                                <tr><td>IKEA</td><td>IKEA → Montígala</td><td>20€</td><td>Bizum</td></tr>
+                                <tr><td>Decoven</td><td>Taller → Pomaret 49</td><td>60€</td><td>Transfer.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="total-dia">
+                        <span class="label">Total del día</span>
+                        <span class="importe">470€</span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- MAR 28 — VACÍO — CERRADO -->
+            <details class="dia-item">
+                <summary>
+                    <div class="sum-izq">
+                        <div>
+                            <div class="sum-fecha">Martes 28</div>
+                            <div class="sum-label">julio 2026</div>
+                        </div>
+                    </div>
+                    <div class="sum-der">
+                        <span class="sum-total vacio">Sin datos</span>
+                        <span class="sum-flecha">▼</span>
+                    </div>
+                </summary>
+                <div class="dia-cuerpo">
+                    <p style="text-align:center;color:#9aa0ad;font-size:0.82rem;padding:10px 0;">No hay viajes registrados</p>
+                </div>
+            </details>
+
+            <!-- MIÉ 29 — VACÍO — CERRADO -->
+            <details class="dia-item">
+                <summary>
+                    <div class="sum-izq">
+                        <div>
+                            <div class="sum-fecha">Miércoles 29</div>
+                            <div class="sum-label">julio 2026</div>
+                        </div>
+                    </div>
+                    <div class="sum-der">
+                        <span class="sum-total vacio">Sin datos</span>
+                        <span class="sum-flecha">▼</span>
+                    </div>
+                </summary>
+                <div class="dia-cuerpo">
+                    <p style="text-align:center;color:#9aa0ad;font-size:0.82rem;padding:10px 0;">No hay viajes registrados</p>
+                </div>
+            </details>
+
+            <!-- JUE 30 — VACÍO — CERRADO -->
+            <details class="dia-item">
+                <summary>
+                    <div class="sum-izq">
+                        <div>
+                            <div class="sum-fecha">Jueves 30</div>
+                            <div class="sum-label">julio 2026</div>
+                        </div>
+                    </div>
+                    <div class="sum-der">
+                        <span class="sum-total vacio">Sin datos</span>
+                        <span class="sum-flecha">▼</span>
+                    </div>
+                </summary>
+                <div class="dia-cuerpo">
+                    <p style="text-align:center;color:#9aa0ad;font-size:0.82rem;padding:10px 0;">No hay viajes registrados</p>
+                </div>
+            </details>
+
+            <!-- VIE 31 — VACÍO — CERRADO -->
+            <details class="dia-item">
+                <summary>
+                    <div class="sum-izq">
+                        <div>
+                            <div class="sum-fecha">Viernes 31</div>
+                            <div class="sum-label">julio 2026</div>
+                        </div>
+                    </div>
+                    <div class="sum-der">
+                        <span class="sum-total vacio">Sin datos</span>
+                        <span class="sum-flecha">▼</span>
+                    </div>
+                </summary>
+                <div class="dia-cuerpo">
+                    <p style="text-align:center;color:#9aa0ad;font-size:0.82rem;padding:10px 0;">No hay viajes registrados</p>
+                </div>
+            </details>
+
+            <!-- SÁB 1 — VACÍO — CERRADO -->
+            <details class="dia-item">
+                <summary>
+                    <div class="sum-izq">
+                        <div>
+                            <div class="sum-fecha">Sábado 1</div>
+                            <div class="sum-label">agosto 2026</div>
+                        </div>
+                    </div>
+                    <div class="sum-der">
+                        <span class="sum-total vacio">Sin datos</span>
+                        <span class="sum-flecha">▼</span>
+                    </div>
+                </summary>
+                <div class="dia-cuerpo">
+                    <p style="text-align:center;color:#9aa0ad;font-size:0.82rem;padding:10px 0;">No hay viajes registrados</p>
+                </div>
+            </details>
+
+        </div>
+
+        <hr class="divider">
+
+        <!-- ═══ ACUMULADO SEMANAL ═══ -->
+        <div class="semana-seccion semana-tabla">
+            <div class="semana-header yinto-bg">🚗 Yinto — acumulado semana</div>
+            <table>
+                <thead><tr><th>Día</th><th>Efectivo</th><th>Transfer.</th><th>Bizum</th><th>Total</th></tr></thead>
+                <tbody>
+                    <tr class="hoy-row"><td>Lun 27</td><td class="vacio">—</td><td>160€</td><td class="vacio">—</td><td>160€</td></tr>
+                    <tr><td>Mar 28</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Mié 29</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Jue 30</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Vie 31</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Sáb 1</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr class="total-row"><td>TOTAL</td><td>—</td><td>160€</td><td>—</td><td>160€</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="semana-seccion semana-tabla">
+            <div class="semana-header steven-bg">🚛 Steven — acumulado semana</div>
+            <table>
+                <thead><tr><th>Día</th><th>Efectivo</th><th>Bizum→Yinto</th><th>Total</th></tr></thead>
+                <tbody>
+                    <tr class="hoy-row"><td>Lun 27</td><td class="vacio">—</td><td>100€</td><td>100€</td></tr>
+                    <tr><td>Mar 28</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Mié 29</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Jue 30</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Vie 31</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Sáb 1</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr class="total-row"><td>TOTAL</td><td>—</td><td>100€</td><td>100€</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="semana-seccion semana-tabla">
+            <div class="semana-header miguel-bg">🚐 Miguel — acumulado semana</div>
+            <table>
+                <thead><tr><th>Día</th><th>Efectivo</th><th>Transfer.</th><th>Bizum</th><th>Total</th></tr></thead>
+                <tbody>
+                    <tr class="hoy-row"><td>Lun 27</td><td>70€</td><td>60€</td><td>80€</td><td>210€</td></tr>
+                    <tr><td>Mar 28</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Mié 29</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Jue 30</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Vie 31</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr><td>Sáb 1</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                    <tr class="total-row"><td>TOTAL</td><td>70€</td><td>60€</td><td>80€</td><td>210€</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- COMBUSTIBLE -->
+        <div class="diesel-header">
+            <span class="label">⛽ Combustible diésel — semana</span>
+        </div>
+        <table>
+            <thead><tr><th>Conductor</th><th>Repostajes</th><th>Total</th></tr></thead>
+            <tbody>
+                <tr><td>🚗 Yinto</td><td>1</td><td>95,17€</td></tr>
+                <tr><td>🚛 Steven</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                <tr><td>🚐 Miguel</td><td class="vacio">—</td><td class="vacio">—</td></tr>
+                <tr class="total-row"><td>TOTAL DIÉSEL</td><td>1</td><td>95,17€</td></tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="footer">Transporte Yinto · Actualizado por Zapia</div>
+</div>
+</body>
+</html>
