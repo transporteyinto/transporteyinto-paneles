@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta c name="viewport"/>
 <title>Trabajos - Transporte Yinto</title>
 <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
@@ -427,9 +427,9 @@
     </tr>
     <tr>
       <td class="cal-td-vac">21</td><td class="cal-td-vac">22</td><td class="cal-td-vac">23</td><td class="cal-td-vac">24</td>
-      <td class="cal-td-ok" id="btn-25" onclick="toggleDia('popup-25', this)"><button><span>25</span><span class="cal-punto"></span></button></td>
-      <td class="cal-td-ok" id="btn-26" onclick="toggleDia('popup-26', this)"><button><span>26</span><span class="cal-punto"></span></button></td>
-      <td class="cal-td-ok" id="btn-27" onclick="toggleDia('popup-27', this)"><button><span>27</span><span class="cal-punto"></span></button></td>
+      <td class="cal-td-ok" id="btn-25"><button><span>25</span><span class="cal-punto"></span></button></td>
+      <td class="cal-td-ok" id="btn-26"><button><span>26</span><span class="cal-punto"></span></button></td>
+      <td class="cal-td-ok" id="btn-27"><button><span>27</span><span class="cal-punto"></span></button></td>
     </tr>
     <tr class="cal-popup-row">
       <td colspan="7">
@@ -520,21 +520,6 @@
 </table>
 </div>
 
-<script>
-function toggleDia(diaId, btnEl) {
-  var popup = document.getElementById(diaId);
-  var allPopups = document.querySelectorAll('.cal-popup-inner');
-  var allBtns = document.querySelectorAll('.cal-td-ok');
-  var isOpen = popup.classList.contains('visible');
-  allPopups.forEach(function(p){ p.classList.remove('visible'); });
-  allBtns.forEach(function(b){ b.classList.remove('activo'); });
-  if (!isOpen) {
-    popup.classList.add('visible');
-    btnEl.classList.add('activo');
-  }
-}
-</script>
-
 
 <!-- RESUMEN SEMANAL Y MENSUAL -->
 <div style="margin:18px 0 8px 0;">
@@ -603,5 +588,26 @@ function toggleDia(diaId, btnEl) {
 </div>
 <div class="footer">Actualizado por Zapia — 27/07/2026</div>
 </div>
+<script>
+function toggleDia(dia) {
+  var popup = document.getElementById('popup-' + dia);
+  var btn = document.getElementById('btn-' + dia);
+  var abierto = popup.classList.contains('visible');
+  // Cerrar todos
+  document.querySelectorAll('.cal-popup-inner').forEach(function(p){ p.classList.remove('visible'); });
+  document.querySelectorAll('.cal-td-ok').forEach(function(b){ b.classList.remove('activo'); });
+  // Abrir el pulsado si estaba cerrado
+  if (!abierto) {
+    popup.classList.add('visible');
+    btn.classList.add('activo');
+  }
+}
+document.querySelectorAll('.cal-td-ok button').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var dia = this.closest('.cal-td-ok').id.replace('btn-','');
+    toggleDia(dia);
+  });
+});
+</script>
 </body>
 </html>
