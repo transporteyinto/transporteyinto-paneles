@@ -3,12 +3,11 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Trabajos Yinto</title>
 <style>
-        html, body { margin: 0; padding: 0; width: 100%; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; }
-        .container { width: 100%; max-width: 100%; margin: 0; padding: 6px; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
+        .container { max-width: 500px; margin: auto; }
         .header { background: #1565c0; color: white; padding: 20px; border-radius: 12px 12px 0 0; text-align: center; }
         .content { background: white; padding: 15px; border-radius: 0 0 12px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         h1 { margin: 0; font-size: 1.5rem; }
@@ -129,7 +128,7 @@
         .hist-count { background:#e53935; color:white; border-radius:12px; padding:1px 8px; font-size:0.78rem; font-weight:700; margin-left:8px; }
         .hist-chevron { color:#e53935; font-size:0.85rem; transition:transform 0.25s; display:inline-block; }
         .hist-chevron.open { transform:rotate(180deg); }
-        .hist-
+        .hist-body { display:none; padding:8px 6px 4px; background:#fff8f8; }
         .hist-body.open { display:block; }
 
         /* HISTORIAL ACORDEÓN con <details> */
@@ -174,26 +173,6 @@
             padding: 8px 6px 4px;
             background: #fff8f8;
         }
-        /* HISTORIAL CALENDARIO JS */
-        .cal-wrap { margin-top:4px; }
-        .cal-mes-tit { text-align:center; font-weight:800; font-size:1rem; color:#1a73e8; margin:14px 0 8px; }
-        .cal-tbl { width:100%; border-collapse:separate; border-spacing:3px; }
-        .cal-tbl thead th { text-align:center; font-size:0.72rem; font-weight:700; color:#aaa; padding:3px 0; }
-        .cal-td-vac { text-align:center; font-size:1rem; font-weight:600; color:#ccc; padding:7px 2px; border-radius:8px; }
-        .cal-td-ok { text-align:center; font-size:1.1rem; font-weight:800; color:white;
-            background:#222; border-radius:8px; padding:0; border:2px solid #222; cursor:pointer; }
-        .cal-td-ok button { background:none; border:none; width:100%; padding:6px 2px;
-            font-size:1.1rem; font-weight:800; color:white; cursor:pointer; line-height:1.2;
-            display:flex; flex-direction:column; align-items:center; }
-        .cal-td-ok.activo { background:#111; border-color:#111; }
-        .cal-td-ok.activo button { color:white; }
-        .cal-punto { width:6px; height:6px; background:white; border-radius:50%; margin:2px auto 0; display:block; }
-        .cal-td-ok.activo .cal-punto { background:white; }
-        .cal-popup-row td { padding:0; }
-        .cal-popup-inner { background:#fff8f8; border:1px solid #f5c6c6; border-radius:10px; padding:10px 8px; margin:4px 0 8px; display:none; }
-        .cal-popup-inner.visible { display:block; }
-        .cal-popup-tit { font-weight:700; color:#b71c1c; font-size:0.88rem; margin-bottom:8px; }
-        .cal-badge { background:#e53935; color:white; border-radius:10px; padding:1px 7px; font-size:0.73rem; margin-left:6px; }
     </style>
 </head>
 <body>
@@ -268,123 +247,44 @@
 </div>
 
 <div class="section-title">📁 Historial</div>
-<div class="cal-wrap">
-<div class="cal-mes-tit">Julio 2026</div>
-<table class="cal-tbl">
-  <thead>
-    <tr><th>L</th><th>M</th><th>X</th><th>J</th><th>V</th><th>S</th><th>D</th></tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="cal-td-vac"></td>
-      <td class="cal-td-vac">1</td><td class="cal-td-vac">2</td><td class="cal-td-vac">3</td>
-      <td class="cal-td-vac">4</td><td class="cal-td-vac">5</td><td class="cal-td-vac">6</td>
-    </tr>
-    <tr>
-      <td class="cal-td-vac">7</td><td class="cal-td-vac">8</td><td class="cal-td-vac">9</td>
-      <td class="cal-td-vac">10</td><td class="cal-td-vac">11</td><td class="cal-td-vac">12</td><td class="cal-td-vac">13</td>
-    </tr>
-    <tr>
-      <td class="cal-td-vac">14</td><td class="cal-td-vac">15</td><td class="cal-td-vac">16</td>
-      <td class="cal-td-vac">17</td><td class="cal-td-vac">18</td><td class="cal-td-vac">19</td><td class="cal-td-vac">20</td>
-    </tr>
-    <tr>
-      <td class="cal-td-vac">21</td><td class="cal-td-vac">22</td><td class="cal-td-vac">23</td><td class="cal-td-vac">24</td>
-      <td class="cal-td-ok" id="btn-25"><button><span>25</span><span class="cal-punto"></span></button></td>
-      <td class="cal-td-ok" id="btn-26"><button><span>26</span><span class="cal-punto"></span></button></td>
-      <td class="cal-td-ok" id="btn-27"><button><span>27</span><span class="cal-punto"></span></button></td>
-    </tr>
-    <tr class="cal-popup-row">
-      <td colspan="7">
-        <div class="cal-popup-inner" id="popup-25">
-          <div class="cal-popup-tit">Sábado 25 julio <span class="cal-badge">1</span></div>
-          <div class="job-card realizado">
-        <div class="job-header">
-          <span class="status-badge badge-realizado">🔴 Finalizado</span>
-          <span class="driver-badge driver-miguel">🚗 Miguel</span>
-        </div>
-        <div class="job-title"><span class="job-num">H</span>🚚 Traslados</div>
-        <div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">ORIGEN:</span> <a href="https://maps.google.com/?q=Platafor+San+Adrián" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Platafor San Adrián</a></div>
-        <div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO:</span> <a href="https://maps.google.com/?q=Pomaret+49,+BCN" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Pomaret 49, BCN</a> <span style="color:#e65c00;font-weight:bold;">(Decoven)</span></div>
-        <div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">ORIGEN 2:</span> <a href="https://maps.google.com/?q=Gerona" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Gerona</a></div>
-        <div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO 2:</span> <a href="https://maps.google.com/?q=Taller+Decoven" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Taller Decoven</a></div>
-      </div>
-        </div>
-        <div class="cal-popup-inner" id="popup-26">
-          <div class="cal-popup-tit">Domingo 26 julio <span class="cal-badge">1</span></div>
-          <div class="job-card realizado" id="job-piero">
-        <div class="job-header">
-          <span class="status-badge badge-realizado">🔴 Finalizado</span>
-          <span class="driver-badge driver-yinto">🚗 Yinto</span>
-        </div>
-        <div class="job-title"><span class="job-num">H</span>📦 Mudanza · Piero</div>
-        <div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">ORIGEN:</span> <a href="https://maps.google.com/?q=Calle+Londres+35,+BCN" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Calle Londres 35, BCN</a></div>
-        <div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO:</span> <a href="https://maps.google.com/?q=Calle+Pallars+BCN" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Calle Pallars, BCN</a></div>
-        <div class="job-price">💶 200€</div>
-      </div>
-        </div>
-        <div class="cal-popup-inner" id="popup-27">
-          <div class="cal-popup-tit">Lunes 27 julio <span class="cal-badge">5</span></div>
-          <div class="job-card realizado" id="job-arsenal-1047">
-        <div class="job-header">
-          <span class="status-badge badge-realizado">🔴 Finalizado</span>
-          <span class="driver-badge driver-steven">🚗 Steven</span>
-        </div>
-        <div class="job-title"><span class="job-num">H</span>📦 Transporte · Arsenal</div>
-        <div class="job-info">📍 Arsenal — entrega en cliente</div>
-        <div class="job-price">💶 115€</div>
-      </div>
-      <div class="job-card realizado" id="job-jorge-madera">
-        <div class="job-header">
-          <span class="status-badge badge-realizado">🔴 Finalizado</span>
-          <span class="driver-badge driver-yinto">🚗 Yinto</span>
-        </div>
-        <div class="job-title"><span class="job-num">H</span>🪵 Madera · Jorge</div>
-        <div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">ORIGEN:</span> Almacén</div>
-        <div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO:</span> <a href="https://maps.google.com/?q=Passeig+de+Gràcia+28+Barcelona" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Passeig de Gràcia 28, BCN</a></div>
-        <div class="job-price">💶 80€</div>
-      </div>
-      <div class="job-card realizado" id="job-johana">
-        <div class="job-header">
-          <span class="status-badge badge-realizado">🔴 Finalizado</span>
-          <span class="driver-badge driver-yinto">🚗 Yinto</span>
-        </div>
-        <div class="job-title"><span class="job-num">H</span>📦 Transporte industrial · Johana Decoven</div>
-        <div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">RECOGIDA 1:</span> Taller</div>
-        <div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">RECOGIDA 2:</span> <a href="https://maps.google.com/?q=Carrer+de+la+Llacuna,+57,+Barcelona" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Llacuna 57, Barcelona</a></div>
-        <div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">ENTREGA:</span> <a href="https://maps.google.com/?q=Pomaret+49+Barcelona" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Pomaret 49, Barcelona</a></div>
-        <div class="job-price">💶 80€</div>
-      </div>
-      <div class="job-card realizado" id="job-pepe">
-        <div class="job-header">
-          <span class="status-badge badge-realizado">🔴 Finalizado</span>
-          <span class="driver-badge driver-miguel">🚗 Miguel</span>
-        </div>
-        <div class="job-title"><span class="job-num">H</span>📦 Trabajo · Pepe</div>
-        <div class="job-price">💶 35€</div>
-      </div>
-      <div class="job-card realizado" id="job-jesus-beal">
-        <div class="job-header">
-          <span class="status-badge badge-realizado">🔴 Finalizado</span>
-          <span class="driver-badge driver-yinto">🚗 Yinto</span>
-        </div>
-        <div class="job-title"><span class="job-num">H</span>📦 Transporte · Jesús Beal</div>
-        <div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO:</span> <a href="https://maps.google.com/?q=Passeig+de+Gràcia+28+Barcelona" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Passeig de Gràcia 28, 1º 2ª, Barcelona</a></div>
-        <div class="job-price">💶 135€ | Comisión Jesús: -20€ | Ayudante Jorbi: -15€ | <span style="color:#2e7d32;">💰 Neto Yinto: 100€</span></div>
-      </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="cal-td-vac">28</td><td class="cal-td-vac">29</td><td class="cal-td-vac">30</td><td class="cal-td-vac">31</td>
-      <td class="cal-td-vac"></td><td class="cal-td-vac"></td><td class="cal-td-vac"></td>
-    </tr>
-  </tbody>
-</table>
+
+<details class="hist-details">
+  <summary>📅 Lunes 27 de julio<span class="hist-count">1</span></summary>
+  <div class="hist-body-inner">
+<div class="job-card realizado">
+<span class="status-badge badge-realizado">🔴 Finalizado</span>
+<div class="card-ticker"><span>📅 Lunes 27 de julio | 10:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Lunes 27 de julio | 10:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Lunes 27 de julio | 10:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Lunes 27 de julio | 10:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Lunes 27 de julio | 10:00  •  🚚 Transportes y Mudanzas Yinto</span></div>
+<div style="margin:4px 0 6px 0;padding:8px 10px;background:#fff7f0;border-left:3px solid #e65c00;border-radius:6px;"><div style="font-size:1rem;font-weight:700;color:#333;">👤 Johana Decoven</div><div style="margin-top:3px;">📞 <a href="tel:+34642414219" style="color:#e65c00;font-weight:700;text-decoration:none;font-size:1.1rem;">642 414 219</a></div></div>
+<div class="job-title"><span class="job-num">2</span>🚐 Traslado operarios a Gerona<span style="margin-left:auto;font-size:0.8rem;font-weight:normal;color:#555;white-space:nowrap;">📅 Lunes 27 de julio | 10:00</span></div>
+<div class="job-info"><span class="countdown pasado">📅 27/07/2026</span></div>
+<div class="job-info">📅 Lunes 27 de julio | 10:00</div>
+<div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">ORIGEN:</span> <a href="https://maps.google.com/?q=Barcelona" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Barcelona</a></div>
+<div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO:</span> <a href="https://maps.google.com/?q=Gerona" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Gerona</a></div>
+<div class="job-note">⚠️ Llevar a Israel y otro operario.</div>
+<div class="job-price">💶 160€ | <span style="color:#1a73e8;">🏦 Transferencia (Decoven)</span></div>
+<div class="acciones"><a class="btn-resena" href="https://wa.me/34642414219?text=Hola%20Johana%20%F0%9F%91%8B%20Gracias%20por%20confiar%20en%20Transportes%20Yinto.%20Si%20quedaste%20contento%20con%20el%20servicio%2C%20nos%20ayudar%C3%ADa%20mucho%20que%20nos%20dejaras%20una%20rese%C3%B1a%20en%20Google%20%F0%9F%99%8F%E2%AD%90%20Solo%20tarda%20un%20minuto%3A%20https%3A//g.page/r/CVhTJS5wZtJmEBE/review%3Fhl%3Des" target="_blank">⭐ Enviar reseña por WhatsApp</a></div>
 </div>
+  </div>
+</details>
+<details class="hist-details">
+  <summary>📅 Domingo 26 de julio<span class="hist-count">1</span></summary>
+  <div class="hist-body-inner">
+<div class="job-card realizado">
+<span class="status-badge badge-realizado">🔴 Finalizado</span>
+<div class="card-ticker"><span>📅 Domingo 26 de julio | 12:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Domingo 26 de julio | 12:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Domingo 26 de julio | 12:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Domingo 26 de julio | 12:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Domingo 26 de julio | 12:00  •  🚚 Transportes y Mudanzas Yinto</span></div>
+<div style="margin:4px 0 6px 0;padding:8px 10px;background:#fff7f0;border-left:3px solid #e65c00;border-radius:6px;"><div style="font-size:1rem;font-weight:700;color:#333;">👤 Piero</div><div style="margin-top:3px;">📞 <a href="tel:+34634169641" style="color:#e65c00;font-weight:700;text-decoration:none;font-size:1.1rem;">634 169 641</a></div></div>
+<div class="job-title"><span class="job-num">1</span>🚚 Traslado<span style="margin-left:auto;font-size:0.8rem;font-weight:normal;color:#555;white-space:nowrap;">📅 Domingo 26 de julio | 12:00</span></div>
+<div class="job-info"><span class="countdown pasado">📅 26/07/2026</span></div>
+<div class="job-info">📅 Domingo 26 de julio | 12:00</div>
+<div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">ORIGEN:</span> <a href="https://maps.google.com/?q=Barcelona" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Barcelona</a></div>
+<div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO:</span> <a href="https://maps.google.com/?q=Barcelona" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Barcelona</a></div>
+<div class="job-price">💶 50€ — solo transporte</div>
+<div class="acciones"><a class="btn-resena" href="https://wa.me/34634169641?text=Hola%20Piero%20%F0%9F%91%8B%20Gracias%20por%20confiar%20en%20Transportes%20Yinto.%20Si%20quedaste%20contento%20con%20el%20servicio%2C%20nos%20ayudar%C3%ADa%20mucho%20que%20nos%20dejaras%20una%20rese%C3%B1a%20en%20Google%20%F0%9F%99%8F%E2%AD%90%20Solo%20tarda%20un%20minuto%3A%20https%3A%2F%2Fg.page%2Fr%2FCVhTJS5wZtJmEBE%2Freview%3Fhl%3Des" target="_blank">⭐ Enviar reseña por WhatsApp</a></div>
+</div>
+  </div>
+</details>
 
-
-
+<div style="margin-top:14px;background:#fff8e1;border-radius:10px;padding:12px 14px;border:2px solid #f9a825;">
 <div style="font-size:1rem;font-weight:bold;color:#e65c00;margin-bottom:8px;">⛽ Combustible — Diésel</div>
 <div id="combustible-lista" style="font-size:0.9rem;color:#5f6368;">
               ⛽ 27/07/2026 · BonÀrea Badalona · 61,32 L · <strong>95,17€</strong>
@@ -395,27 +295,16 @@
 <a href="https://site.zapia.com/dl6m5bla" style="display:inline-block;background:#1565c0;color:white;font-weight:bold;font-size:0.95rem;padding:11px 10px;border-radius:10px;text-decoration:none;flex:1;text-align:center;" target="_blank">🚗 Panel Steven</a>
 <a href="https://site.zapia.com/vfua10lg" style="display:inline-block;background:#6a1b9a;color:white;font-weight:bold;font-size:0.95rem;padding:11px 10px;border-radius:10px;text-decoration:none;flex:1;text-align:center;" target="_blank">🚗 Panel Miguel</a>
 </div>
-<div class="footer">Actualizado por Zapia — 27/07/2026 20:21</div>
-<script>
-function toggleDia(dia) {
-  var popup = document.getElementById('popup-' + dia);
-  var btn = document.getElementById('btn-' + dia);
-  var abierto = popup.classList.contains('visible');
-  // Cerrar todos
-  document.querySelectorAll('.cal-popup-inner').forEach(function(p){ p.classList.remove('visible'); });
-  document.querySelectorAll('.cal-td-ok').forEach(function(b){ b.classList.remove('activo'); });
-  // Abrir el pulsado si estaba cerrado
-  if (!abierto) {
-    popup.classList.add('visible');
-    btn.classList.add('activo');
-  }
-}
-document.querySelectorAll('.cal-td-ok button').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    var dia = this.closest('.cal-td-ok').id.replace('btn-','');
-    toggleDia(dia);
-  });
-});
-</script>
+<div class="footer">Actualizado por Zapia — 27/07/2026</div>
+
+
+    <script>
+    document.querySelectorAll('.hist-header').forEach(function(h){
+        h.addEventListener('click',function(){
+            this.nextElementSibling.classList.toggle('open');
+            this.querySelector('.hist-chevron').classList.toggle('open');
+        });
+    });
+    </script>
 </body>
 </html>
