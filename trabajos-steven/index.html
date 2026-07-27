@@ -397,5 +397,26 @@
 </div>
 <div class="footer">Actualizado por Zapia — 27/07/2026</div>
 </div>
+<script>
+function toggleDia(dia) {
+  var popup = document.getElementById('popup-' + dia);
+  var btn = document.getElementById('btn-' + dia);
+  var abierto = popup.classList.contains('visible');
+  // Cerrar todos
+  document.querySelectorAll('.cal-popup-inner').forEach(function(p){ p.classList.remove('visible'); });
+  document.querySelectorAll('.cal-td-ok').forEach(function(b){ b.classList.remove('activo'); });
+  // Abrir el pulsado si estaba cerrado
+  if (!abierto) {
+    popup.classList.add('visible');
+    btn.classList.add('activo');
+  }
+}
+document.querySelectorAll('.cal-td-ok button').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var dia = this.closest('.cal-td-ok').id.replace('btn-','');
+    toggleDia(dia);
+  });
+});
+</script>
 </body>
 </html>
