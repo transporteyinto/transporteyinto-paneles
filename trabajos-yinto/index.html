@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trabajos Yinto</title>
+<style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; }
+        .container { max-width: 500px; margin: auto; }
+        .header { background: #1565c0; color: white; padding: 20px; border-radius: 12px 12px 0 0; text-align: center; }
+        .content { background: white; padding: 15px; border-radius: 0 0 12px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { margin: 0; font-size: 1.5rem; }
+        .subtitle { font-size: 0.9rem; opacity: 0.85; margin-top: 4px; }
+        .section-title { font-size: 1rem; color: #1565c0; font-weight: bold; margin: 15px 0 10px 0; border-bottom: 1px solid #e8eaed; padding-bottom: 5px; }
+        .confirmado { border-left: 4px solid #bf4000; background: #ffe0b2; padding: 12px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .realizado { border-left: 4px solid #e53935; background: #fdecea; padding: 12px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .job-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #1565c0;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-right: 8px;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        .job-title { font-weight: bold; font-size: 1.05rem; color: #202124; display: flex; align-items: center; }
+
+        .cliente-tag { color: #e65c00; font-weight: bold; }
+        .job-info { color: #5f6368; font-size: 0.9rem; margin: 4px 0; }
+        .job-note { font-size: 0.85rem; color: #e65100; font-style: italic; margin-top: 4px; }
+        .job-price { font-size: 0.95rem; font-weight: bold; color: #1a73e8; margin-top: 4px; }
+        .status-badge { display: inline-block; font-size: 0.95rem; font-weight: bold; padding: 2px 8px; border-radius: 12px; margin-bottom: 6px; }
+        .footer { text-align: center; font-size: 0.8rem; color: #70757a; margin-top: 20px; }
+        /* Botón enviar reseña */
+        .btn-resena {
+            display: inline-block;
+            margin-top: 6px;
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-resena:active { opacity: 0.8; }
+        .acciones { margin-top: 8px; }
+
+        /* Banner header profesional */
+        .banner-ticker {
+            background: linear-gradient(90deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+            color: white;
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            border-radius: 0 0 12px 12px;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+            border-top: 2px solid rgba(255,255,255,0.12);
+        }
+        .banner-ticker span {
+            display: inline-block;
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            animation: ticker 22s linear infinite;
+        }
+        @keyframes ticker {
+            0%   { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Banner animado en tarjeta */
+        .card-ticker {
+            overflow: hidden;
+            white-space: nowrap;
+            background: #e65c00;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 0;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        .card-ticker span {
+            display: inline-block;
+            animation: cardticker 30s linear infinite;
+        }
+        @keyframes cardticker {
+            0%   { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Pulso para trabajos de hoy */
+        @keyframes pulse-today {
+            0%   { box-shadow: 0 0 0 0 rgba(230, 92, 0, 0.55); }
+            60%  { box-shadow: 0 0 0 8px rgba(230, 92, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(230, 92, 0, 0); }
+        }
+        .hoy-pulso {
+            animation: pulse-today 1.4s ease-in-out infinite;
+        }
+
+        @keyframes pulso {
+            0%   { box-shadow: 0 0 0 0 rgba(230, 92, 0, 0.45); }
+            70%  { box-shadow: 0 0 0 10px rgba(230, 92, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(230, 92, 0, 0); }
+        }
+        .pulso-hoy {
+            animation: pulso 0.9s ease-in-out infinite;
+        }
+
+        /* HISTORIAL ACORDEON */
+        .hist-grupo { margin-bottom:6px; border-radius:10px; overflow:hidden; border:1px solid #f0d0d0; }
+        .hist-header { display:flex; align-items:center; justify-content:space-between; background:#fdecea; padding:10px 14px; cursor:pointer; user-select:none; }
+        .hist-fecha { font-weight:700; font-size:0.95rem; color:#b71c1c; }
+        .hist-count { background:#e53935; color:white; border-radius:12px; padding:1px 8px; font-size:0.78rem; font-weight:700; margin-left:8px; }
+        .hist-chevron { color:#e53935; font-size:0.85rem; transition:transform 0.25s; display:inline-block; }
+        .hist-chevron.open { transform:rotate(180deg); }
+        .hist-body { display:none; padding:8px 6px 4px; background:#fff8f8; }
+        .hist-body.open { display:block; }
+
+        /* HISTORIAL ACORDEÓN con <details> */
+        .hist-details {
+            margin-bottom: 6px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #f0d0d0;
+        }
+        .hist-details summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fdecea;
+            padding: 10px 14px;
+            cursor: pointer;
+            list-style: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #b71c1c;
+        }
+        .hist-details summary::-webkit-details-marker { display: none; }
+        .hist-details summary::after {
+            content: "▼";
+            font-size: 0.8rem;
+            color: #e53935;
+            transition: transform 0.2s;
+        }
+        .hist-details[open] summary::after {
+            content: "▲";
+        }
+        .hist-count {
+            background: #e53935;
+            color: white;
+            border-radius: 12px;
+            padding: 1px 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+        .hist-body-inner {
+            padding: 8px 6px 4px;
+            background: #fff8f8;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div style="font-size:0.95rem;opacity:0.85;margin-bottom:4px;">👋 Hola Yinto</div><h1>🚚 Transportes y Mudanzas Yinto</h1>
+<div class="subtitle">Transportes y Mudanzas Yinto</div>
+</div>
+<div class="banner-ticker">
+<span>👋 Hola Yinto  •  🚚 Transportes y Mudanzas Yinto  •  📦 Tu panel de trabajos  •  🗓️ Lunes 27 de julio  •  👋 Hola Yinto  •  🚚 Transportes y Mudanzas Yinto  •  📦 Tu panel de trabajos  •  🗓️ Lunes 27 de julio</span>
+</div>
+<div class="content">
+<div style="margin:0 0 14px 0;background:rgba(0,0,0,0.15);border-radius:10px;padding:10px 14px;font-size:0.88rem;display:flex;gap:8px;flex-direction:column;">
+<div style="display:flex;gap:8px;width:100%;justify-content:center;margin-bottom:6px;">
+<div style="background:#ffffff;border-radius:8px;padding:8px 12px;font-weight:bold;flex:1;text-align:center;color:#1a6b2f;font-size:0.95rem;border:2px solid #a5d6a7;">💵 Ef. Yinto: —€</div>
+<div style="background:#ffffff;border-radius:8px;padding:8px 12px;font-weight:bold;flex:1;text-align:center;color:#1565c0;font-size:0.95rem;border:2px solid #90caf9;">💵 Ef. Steven: —€</div>
+<div style="background:#ffffff;border-radius:8px;padding:8px 12px;font-weight:bold;flex:1;text-align:center;color:#6a1b9a;font-size:0.95rem;border:2px solid #ce93d8;">💵 Ef. Miguel: —€</div>
+</div>
+<div style="display:flex;gap:8px;width:100%;justify-content:center;margin-bottom:6px;">
+<div style="background:#ffffff;border-radius:8px;padding:8px 12px;font-weight:bold;flex:1;text-align:center;color:#1a6b2f;font-size:0.95rem;border:2px solid #a5d6a7;">📱 Bizum Yinto: —€</div>
+<div style="background:#ffffff;border-radius:8px;padding:8px 12px;font-weight:bold;flex:1;text-align:center;color:#1565c0;font-size:0.95rem;border:2px solid #90caf9;">📱 Bizum Steven: —€</div>
+<div style="background:#ffffff;border-radius:8px;padding:8px 12px;font-weight:bold;flex:1;text-align:center;color:#6a1b9a;font-size:0.95rem;border:2px solid #ce93d8;">📱 Bizum Miguel: —€</div>
+</div>
+<div style="display:flex;gap:8px;width:100%;justify-content:center;">
+<div style="background:#ffffff;border-radius:8px;padding:8px 12px;font-weight:bold;flex:2;text-align:center;color:#b71c1c;font-size:0.95rem;border:2px solid #ef9a9a;">💰 Neto Yinto: —€</div>
+</div>
+</div>
+<div class="section-title">📅 Próximos trabajos</div>
+
+<div class="job-card confirmado hoy-pulso">
+<span class="status-badge badge-confirmado">✅ Confirmado</span>
+<div class="card-ticker"><span>📅 Martes 28 de julio | 08:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Martes 28 de julio | 08:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Martes 28 de julio | 08:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Martes 28 de julio | 08:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Martes 28 de julio | 08:00  •  🚚 Transportes y Mudanzas Yinto</span></div>
+<div style="margin:4px 0 6px 0;padding:8px 10px;background:#fff7f0;border-left:3px solid #e65c00;border-radius:6px;"><div style="font-size:1rem;font-weight:700;color:#333;">👤 Joaquín</div><div style="margin-top:3px;">📞 <a href="tel:+34626552547" style="color:#e65c00;font-weight:700;text-decoration:none;font-size:1.1rem;">626 552 547</a></div></div>
+<div class="job-title"><span class="job-num">3</span>🏭 Nave<span style="margin-left:auto;font-size:0.8rem;font-weight:normal;color:#555;white-space:nowrap;">📅 Martes 28 de julio | 08:00</span></div> <div class="job-info"><span class="countdown hoy">⏰ Mañana</span></div>
+<div class="job-info">📅 Martes 28 de julio | 08:00</div>
+<div class="job-info">📍 <a href="https://maps.google.com/?q=Nave+en+Moncada" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Nave en Moncada</a></div>
+<div class="acciones"><a class="btn-resena" href="https://wa.me/34626552547?text=Hola%20Joaqu%C3%ADn%20%F0%9F%91%8B%20Gracias%20por%20confiar%20en%20Transportes%20Yinto.%20Si%20quedaste%20contento%20con%20el%20servicio%2C%20nos%20ayudar%C3%ADa%20mucho%20que%20nos%20dejaras%20una%20rese%C3%B1a%20en%20Google%20%F0%9F%99%8F%E2%AD%90%20Solo%20tarda%20un%20minuto%3A%20https%3A//g.page/r/CVhTJS5wZtJmEBE/review%3Fhl%3Des" target="_blank">⭐ Enviar reseña por WhatsApp</a></div>
+</div>
+<div class="job-card confirmado">
+<span class="status-badge badge-confirmado">✅ Confirmado</span>
+<div class="card-ticker"><span>📅 Jueves 30 de julio | 08:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Jueves 30 de julio | 08:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Jueves 30 de julio | 08:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Jueves 30 de julio | 08:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Jueves 30 de julio | 08:00  •  🚚 Transportes y Mudanzas Yinto</span></div>
+<div style="margin:4px 0 6px 0;padding:8px 10px;background:#fff7f0;border-left:3px solid #e65c00;border-radius:6px;"><div style="font-size:1rem;font-weight:700;color:#333;">👤 Yoann</div><div style="margin-top:3px;">📞 <a href="tel:+34691845272" style="color:#e65c00;font-weight:700;text-decoration:none;font-size:1.1rem;">691 845 272</a></div></div>
+<div class="job-title"><span class="job-num">4</span>🏠 Mudanza<span style="margin-left:auto;font-size:0.8rem;font-weight:normal;color:#555;white-space:nowrap;">📅 Jueves 30 de julio | 08:00</span></div> <div class="job-info"><span class="countdown">📅 En 3 días</span></div>
+<div class="job-info">📅 Jueves 30 de julio | 08:00</div>
+<div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">ORIGEN:</span> <a href="https://maps.google.com/?q=Nàpols+149" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Nàpols 149</a></div>
+<div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO:</span> <a href="https://maps.google.com/?q=Còrsega+466,+Barcelona" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Còrsega 466, Barcelona</a></div>
+<div class="job-price">💶 160€ + extra por lo que salga</div>
+<div class="job-note">~20 cajas + estanterías + muebles infantiles.</div>
+<div class="acciones"><a class="btn-resena" href="https://wa.me/34691845272?text=Hola%20Yoann%20%F0%9F%91%8B%20Gracias%20por%20confiar%20en%20Transportes%20Yinto.%20Si%20quedaste%20contento%20con%20el%20servicio%2C%20nos%20ayudar%C3%ADa%20mucho%20que%20nos%20dejaras%20una%20rese%C3%B1a%20en%20Google%20%F0%9F%99%8F%E2%AD%90%20Solo%20tarda%20un%20minuto%3A%20https%3A//g.page/r/CVhTJS5wZtJmEBE/review%3Fhl%3Des" target="_blank">⭐ Enviar reseña por WhatsApp</a></div>
+</div>
+
+
+
+<div class="job-card confirmado" id="job-encarna-salva">
+<div class="job-header">
+<span class="status-badge badge-confirmado">✅ Confirmado</span>
+<span class="driver-badge driver-yinto">🚗 Yinto</span>
+<span class="driver-badge driver-steven" style="margin-left:4px;">🚗 Steven</span>
+</div>
+<div class="card-ticker"><span>📅 Miércoles 30 de julio | 15:30  •  👤 Encarna (hermana de Salvador)  •  📅 Miércoles 30 de julio | 15:30  •  👤 Encarna (hermana de Salvador)  •  📅 Miércoles 30 de julio | 15:30  •  👤 Encarna (hermana de Salvador)</span></div>
+<div style="margin:4px 0 6px 0;padding:8px 10px;background:#fff7f0;border-left:3px solid #e65c00;border-radius:6px;"><div style="font-size:1rem;font-weight:700;color:#333;">👤 Encarna (hermana de Salvador)</div><div style="margin-top:3px;">📞 <a href="tel:+34682272356" style="color:#e65c00;font-weight:700;text-decoration:none;font-size:1.1rem;">682 272 356</a></div></div>
+<div class="job-title"><span class="job-num">·</span>🚛 Mudanza<span style="margin-left:auto;font-size:0.8rem;font-weight:normal;color:#555;white-space:nowrap;">📅 Miércoles 30 de julio | 15:30</span></div>
+<div class="job-info">📅 Miércoles 30 de julio | 15:30</div>
+<div class="job-info">🚐 2 furgonetas · 👷 Ayudante: por confirmar</div>
+<div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">ORIGEN:</span> <a href="https://maps.google.com/?q=Trastero+planta+baja,+Badalona" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Trastero planta baja — Badalona</a></div>
+<div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO 1:</span> <a href="https://maps.google.com/?q=C/+María+Cortina+i+Pascual+9,+Reus" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">C/ María Cortina i Pascual 9, Reus</a></div>
+<div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO 2:</span> <a href="https://maps.google.com/?q=Rambla+de+la+Girada+99,+Vilafranca" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Rambla de la Girada 99, Vilafranca</a></div>
+<div class="job-price">💶 850€ (IVA incluido)</div>
+<div class="acciones">
+<a class="btn-resena" href="https://wa.me/34682272356?text=Hola%20Encarna%20%F0%9F%91%8B%20Gracias%20por%20confiar%20en%20Transportes%20Yinto.%20Si%20quedaste%20contento%20con%20el%20servicio%2C%20nos%20ayudar%C3%ADa%20mucho%20que%20nos%20dejaras%20una%20rese%C3%B1a%20en%20Google%20%F0%9F%99%8F%E2%AD%90%20Solo%20tarda%20un%20minuto%3A%20https%3A//g.page/r/CVhTJS5wZtJmEBE/review%3Fhl%3Des" target="_blank">⭐ Enviar reseña por WhatsApp</a>
+</div>
+</div>
+
+<div class="section-title">📁 Historial</div>
+
+<details class="hist-details">
+  <summary>📅 Lunes 27 de julio<span class="hist-count">1</span></summary>
+  <div class="hist-body-inner">
+<div class="job-card realizado">
+<span class="status-badge badge-realizado">🔴 Finalizado</span>
+<div class="card-ticker"><span>📅 Lunes 27 de julio | 10:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Lunes 27 de julio | 10:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Lunes 27 de julio | 10:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Lunes 27 de julio | 10:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Lunes 27 de julio | 10:00  •  🚚 Transportes y Mudanzas Yinto</span></div>
+<div style="margin:4px 0 6px 0;padding:8px 10px;background:#fff7f0;border-left:3px solid #e65c00;border-radius:6px;"><div style="font-size:1rem;font-weight:700;color:#333;">👤 Johana Decoven</div><div style="margin-top:3px;">📞 <a href="tel:+34642414219" style="color:#e65c00;font-weight:700;text-decoration:none;font-size:1.1rem;">642 414 219</a></div></div>
+<div class="job-title"><span class="job-num">2</span>🚐 Traslado operarios a Gerona<span style="margin-left:auto;font-size:0.8rem;font-weight:normal;color:#555;white-space:nowrap;">📅 Lunes 27 de julio | 10:00</span></div>
+<div class="job-info"><span class="countdown pasado">📅 27/07/2026</span></div>
+<div class="job-info">📅 Lunes 27 de julio | 10:00</div>
+<div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">ORIGEN:</span> <a href="https://maps.google.com/?q=Barcelona" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Barcelona</a></div>
+<div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO:</span> <a href="https://maps.google.com/?q=Gerona" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Gerona</a></div>
+<div class="job-note">⚠️ Llevar a Israel y otro operario.</div>
+<div class="job-price">💶 160€ | <span style="color:#1a73e8;">🏦 Transferencia (Decoven)</span></div>
+<div class="acciones"><a class="btn-resena" href="https://wa.me/34642414219?text=Hola%20Johana%20%F0%9F%91%8B%20Gracias%20por%20confiar%20en%20Transportes%20Yinto.%20Si%20quedaste%20contento%20con%20el%20servicio%2C%20nos%20ayudar%C3%ADa%20mucho%20que%20nos%20dejaras%20una%20rese%C3%B1a%20en%20Google%20%F0%9F%99%8F%E2%AD%90%20Solo%20tarda%20un%20minuto%3A%20https%3A//g.page/r/CVhTJS5wZtJmEBE/review%3Fhl%3Des" target="_blank">⭐ Enviar reseña por WhatsApp</a></div>
+</div>
+  </div>
+</details>
+<details class="hist-details">
+  <summary>📅 Domingo 26 de julio<span class="hist-count">1</span></summary>
+  <div class="hist-body-inner">
+<div class="job-card realizado">
+<span class="status-badge badge-realizado">🔴 Finalizado</span>
+<div class="card-ticker"><span>📅 Domingo 26 de julio | 12:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Domingo 26 de julio | 12:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Domingo 26 de julio | 12:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Domingo 26 de julio | 12:00  •  🚚 Transportes y Mudanzas Yinto  •  📅 Domingo 26 de julio | 12:00  •  🚚 Transportes y Mudanzas Yinto</span></div>
+<div style="margin:4px 0 6px 0;padding:8px 10px;background:#fff7f0;border-left:3px solid #e65c00;border-radius:6px;"><div style="font-size:1rem;font-weight:700;color:#333;">👤 Piero</div><div style="margin-top:3px;">📞 <a href="tel:+34634169641" style="color:#e65c00;font-weight:700;text-decoration:none;font-size:1.1rem;">634 169 641</a></div></div>
+<div class="job-title"><span class="job-num">1</span>🚚 Traslado<span style="margin-left:auto;font-size:0.8rem;font-weight:normal;color:#555;white-space:nowrap;">📅 Domingo 26 de julio | 12:00</span></div>
+<div class="job-info"><span class="countdown pasado">📅 26/07/2026</span></div>
+<div class="job-info">📅 Domingo 26 de julio | 12:00</div>
+<div class="job-info">📍 <span style="color:#555;font-size:0.82rem;font-weight:600;">ORIGEN:</span> <a href="https://maps.google.com/?q=Barcelona" style="color:#1a73e8;text-decoration:underline;font-weight:500;" target="_blank">Barcelona</a></div>
+<div class="job-info">🏁 <span style="color:#555;font-size:0.82rem;font-weight:600;">DESTINO:</span> <a href="https://maps.google.com/?q=Barcelona" style="color:#e53935;text-decoration:underline;font-weight:500;" target="_blank">Barcelona</a></div>
+<div class="job-price">💶 50€ — solo transporte</div>
+<div class="acciones"><a class="btn-resena" href="https://wa.me/34634169641?text=Hola%20Piero%20%F0%9F%91%8B%20Gracias%20por%20confiar%20en%20Transportes%20Yinto.%20Si%20quedaste%20contento%20con%20el%20servicio%2C%20nos%20ayudar%C3%ADa%20mucho%20que%20nos%20dejaras%20una%20rese%C3%B1a%20en%20Google%20%F0%9F%99%8F%E2%AD%90%20Solo%20tarda%20un%20minuto%3A%20https%3A%2F%2Fg.page%2Fr%2FCVhTJS5wZtJmEBE%2Freview%3Fhl%3Des" target="_blank">⭐ Enviar reseña por WhatsApp</a></div>
+</div>
+  </div>
+</details>
+
+<div style="margin-top:14px;background:#fff8e1;border-radius:10px;padding:12px 14px;border:2px solid #f9a825;">
+<div style="font-size:1rem;font-weight:bold;color:#e65c00;margin-bottom:8px;">⛽ Combustible — Diésel</div>
+<div id="combustible-lista" style="font-size:0.9rem;color:#5f6368;">
+              ⛽ 27/07/2026 · BonÀrea Badalona · 61,32 L · <strong>95,17€</strong>
+</div>
+<div style="margin-top:8px;background:#fff3cd;border-radius:8px;padding:6px 10px;font-weight:bold;color:#e65c00;font-size:0.95rem;">🧾 Total semana: <span id="combustible-total">95,17€</span></div>
+</div>
+<div style="display:flex;gap:10px;margin-top:10px;margin-bottom:4px;">
+<a href="https://site.zapia.com/dl6m5bla" style="display:inline-block;background:#1565c0;color:white;font-weight:bold;font-size:0.95rem;padding:11px 10px;border-radius:10px;text-decoration:none;flex:1;text-align:center;" target="_blank">🚗 Panel Steven</a>
+<a href="https://site.zapia.com/vfua10lg" style="display:inline-block;background:#6a1b9a;color:white;font-weight:bold;font-size:0.95rem;padding:11px 10px;border-radius:10px;text-decoration:none;flex:1;text-align:center;" target="_blank">🚗 Panel Miguel</a>
+</div>
+<div class="footer">Actualizado por Zapia — 27/07/2026</div>
+
+
+    <script>
+    document.querySelectorAll('.hist-header').forEach(function(h){
+        h.addEventListener('click',function(){
+            this.nextElementSibling.classList.toggle('open');
+            this.querySelector('.hist-chevron').classList.toggle('open');
+        });
+    });
+    </script>
+</body>
+</html>
